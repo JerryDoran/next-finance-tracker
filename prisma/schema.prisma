@@ -28,6 +28,15 @@ model Category {
   @@unique([name, userId, type])
 }
 
+model Description {
+  name      String
+  userId    String
+  type      String   @default("income")
+  createdAt DateTime @default(now())
+
+  @@unique([name, userId])
+}
+
 model Transaction {
   id           String   @id @default(uuid())
   amount       Float
