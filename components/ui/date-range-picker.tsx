@@ -351,7 +351,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                 range.to != null ? ' - ' + formatDate(range.to, locale) : ''
               }`}</div>
             </div>
-            {rangeCompare != null && (
+            {/* {rangeCompare != null && (
               <div className='opacity-60 text-xs -mt-1'>
                 <>
                   vs. {formatDate(rangeCompare.from, locale)}
@@ -360,7 +360,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                     : ''}
                 </>
               </div>
-            )}
+            )} */}
           </div>
           <div className='pl-1 opacity-60 -mr-2 scale-125'>
             {isOpen ? (

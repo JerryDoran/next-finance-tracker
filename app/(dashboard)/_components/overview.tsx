@@ -2,8 +2,12 @@
 
 import { useState } from 'react';
 import { UserSettings } from '@prisma/client';
-import { startOfMonth } from 'date-fns';
+import { differenceInDays, startOfMonth } from 'date-fns';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
+import { MAX_DATE_RANGE_DAYS } from '@/lib/constants';
+import { toast } from 'sonner';
+import StatsCards from './stats-card';
+import CategoriesStats from './categories-stats';
 
 type DateProps = {
   from: Date;
@@ -25,16 +29,35 @@ export default function Overview({
         <h2 className='text-3xl font-bold'>Overview</h2>
         <div className='flex items-center gap-3'>
           <DateRangePicker
-            initialCompareFrom={dateRange.from}
+            initialDateFrom={dateRange.from}
             initialDateTo={dateRange.to}
             showCompare={false}
             onUpdate={(values) => {
               const { from, to } = values.range;
               // we update the date range only if both dates are set
               if (!from || !to) return;
+              if (differenceInDays(to, from) > MAX_DATE_RANGE_DAYS) {
+                toast.error(
+                  `The selected date range is too large. Max allowed range is ${MAX_DATE_RANGE_DAYS} days`
+                );
+                return;
+              }
+              setDateRange({ from, to });
             }}
           />
         </div>
+      </div>
+      <div className='container flex flex-col w-full gap-2'>
+        <StatsCards
+          userSettings={userSettings}
+          from={dateRange.from}
+          to={dateRange.to}
+        />
+        <CategoriesStats
+          userSettings={userSettings}
+          from={dateRange.from}
+          to={dateRange.to}
+        />
       </div>
     </>
   );
