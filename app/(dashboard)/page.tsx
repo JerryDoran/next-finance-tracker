@@ -5,6 +5,7 @@ import { Angry, SmilePlus } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import CreateTransactionDialog from './_components/create-transaction-dialog';
 import Overview from './_components/overview';
+import History from './_components/history';
 
 export default async function HomePage() {
   const user = await currentUser();
@@ -57,6 +58,7 @@ export default async function HomePage() {
         </div>
       </div>
       <Overview userSettings={userSettings} />
+      <History userSettings={userSettings} />
     </div>
   );
 }

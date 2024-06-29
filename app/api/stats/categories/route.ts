@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     throw new Error(queryParams.error.message);
   }
 
-  const stats = getCategoriesStats(
+  const stats = await getCategoriesStats(
     user.id,
     queryParams.data.from,
     queryParams.data.to
@@ -46,7 +46,7 @@ async function getCategoriesStats(userId: string, from: Date, to: Date) {
     },
     orderBy: {
       _sum: {
-        amount: 'asc',
+        amount: 'desc',
       },
     },
   });
