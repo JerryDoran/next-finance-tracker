@@ -46,7 +46,7 @@ export default function HistoryPeriodSelector({
         </Tabs>
       </SkeletonWrapper>
       <div className='flex flex-wrap items-center gap-2'>
-        <SkeletonWrapper isLoading={isFetching}>
+        <SkeletonWrapper isLoading={isFetching} fullWidth={false}>
           <YearsSelector
             period={period}
             setPeriod={setPeriod}

@@ -36,5 +36,5 @@ export async function GET(request: Request) {
     },
   });
 
-  return NextResponse.json(categories);
+  return Response.json(categories);
 }
