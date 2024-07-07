@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { Category } from '@prisma/client';
+import DeleteCategoryDialog from '../_components/delete-category-dialog';
 
 export default function ManagePage() {
   return (
@@ -131,13 +132,18 @@ function CategoryCard({ category }: { category: Category }) {
         </span>
         <span>{category.name}</span>
       </div>
-      <Button
-        className='flex w-full border-separate items-center gap-2 rounded-t-none text-muted-foreground transition hover:bg-red-500/20'
-        variant='secondary'
-      >
-        <Trash className='h-4 w-4' />
-        Remove
-      </Button>
+      <DeleteCategoryDialog
+        category={category}
+        trigger={
+          <Button
+            className='flex w-full border-separate items-center gap-2 rounded-t-none text-muted-foreground transition hover:bg-red-500/20'
+            variant='secondary'
+          >
+            <Trash className='h-4 w-4' />
+            Remove
+          </Button>
+        }
+      />
     </div>
   );
 }
