@@ -187,6 +187,18 @@ export default function TransactionTable({ from, to }: TransactionTableProps) {
     return Array.from(uniqueCategories);
   }, [history.data]);
 
+  const descriptionOptions = useMemo(() => {
+    const descriptionsMap = new Map();
+    history.data?.forEach((transaction) => {
+      descriptionsMap.set(transaction.description, {
+        value: transaction.description,
+        label: `${transaction.description}`,
+      });
+    });
+    const uniqueDescriptions = new Set(descriptionsMap.values());
+    return Array.from(uniqueDescriptions);
+  }, [history.data]);
+
   return (
     <div className='w-full'>
       <div className='flex flex-wrap items-end justify-between gap-2 py-4'>
@@ -196,6 +208,13 @@ export default function TransactionTable({ from, to }: TransactionTableProps) {
               title='Category'
               column={table.getColumn('category')}
               options={categoriesOptions}
+            />
+          )}
+          {table.getColumn('description') && (
+            <DataTableFacetedFilter
+              title='Description'
+              column={table.getColumn('description')}
+              options={descriptionOptions}
             />
           )}
           {table.getColumn('type') && (
