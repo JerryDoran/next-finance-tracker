@@ -39,6 +39,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import DeleteTransactionDialog from './delete-transaction-dialog';
+import EditTransactionDialog from './edit-transaction-dialog';
 
 type TransactionTableProps = {
   from: Date;
@@ -338,6 +339,7 @@ function RowActions({ transaction }: { transaction: TransactionHistoryRow }) {
         setOpen={setShowDeleteDialog}
         transactionId={transaction.id}
       />
+
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Button variant='ghost' className='h-8 w-8 p-0'>
@@ -357,15 +359,20 @@ function RowActions({ transaction }: { transaction: TransactionHistoryRow }) {
             <TrashIcon className='h-4 w-4 text-muted-foreground' />
             Delete
           </DropdownMenuItem>
-          {/* <DropdownMenuItem
-            className='flex items-center gap-2'
-            onSelect={() => {
-              setShowDeleteDialog((prev) => !prev);
-            }}
-          >
-            <Edit className='h-4 w-4 text-muted-foreground' />
-            Edit
-          </DropdownMenuItem> */}
+
+          <EditTransactionDialog
+            transaction={transaction}
+            type={transaction.type === 'income' ? 'income' : 'expense'}
+            trigger={
+              <div
+                role='button'
+                className='flex items-center gap-2 text-sm my-2 py-1.5 rounded-sm hover:bg-white/10'
+              >
+                <Edit className='h-4 w-4 text-muted-foreground ml-2' />
+                Edit
+              </div>
+            }
+          />
         </DropdownMenuContent>
       </DropdownMenu>
     </>

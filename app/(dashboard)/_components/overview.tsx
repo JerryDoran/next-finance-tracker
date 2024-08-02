@@ -20,7 +20,8 @@ export default function Overview({
   userSettings: UserSettings;
 }) {
   const [dateRange, setDateRange] = useState<DateProps>({
-    from: startOfMonth(new Date()),
+    // from: startOfMonth(new Date()),
+    from: new Date('July 1, 2024 00:00:00'),
     to: new Date(),
   });
   return (
