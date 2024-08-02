@@ -105,19 +105,19 @@ export default function EditTransactionDialog({
     },
   });
 
-  const onSubmit = useCallback(
-    (values: EditTransactionSchemaType) => {
-      toast.loading('Editing transaction...', {
-        id: 'edit-transaction',
-      });
+  // const onSubmit = useCallback(
+  //   (values: EditTransactionSchemaType) => {
+  //     toast.loading('Editing transaction...', {
+  //       id: 'edit-transaction',
+  //     });
 
-      mutate({
-        ...values,
-        date: dateToUTCDate(values.date),
-      });
-    },
-    [mutate]
-  );
+  //     mutate({
+  //       ...values,
+  //       date: dateToUTCDate(values.date),
+  //     });
+  //   },
+  //   [mutate]
+  // );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -138,7 +138,8 @@ export default function EditTransactionDialog({
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+          {/* form.handleSubmit(onSubmit) goes into the onSubmit property */}
+          <form className='space-y-4'>
             {/* <FormField
               control={form.control}
               name='description'
