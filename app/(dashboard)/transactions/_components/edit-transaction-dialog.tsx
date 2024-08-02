@@ -271,7 +271,8 @@ export default function EditTransactionDialog({
               Cancel
             </Button>
           </DialogClose>
-          <Button onClick={form.handleSubmit(onSubmit)} disabled={isPending}>
+          {/* form.handleSubmit(onSubmit) goes in onClick */}
+          <Button disabled={isPending}>
             {!isPending && 'Edit'}
             {isPending && <Loader2 className='animate-spin' />}
           </Button>
