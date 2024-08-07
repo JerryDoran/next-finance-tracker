@@ -64,19 +64,19 @@ export default function EditTransactionDialog({
     },
   });
 
-  const handleCategoryChange = useCallback(
-    (value: string) => {
-      form.setValue('category', value);
-    },
-    [form]
-  );
+  // const handleCategoryChange = useCallback(
+  //   (value: string) => {
+  //     form.setValue('category', value);
+  //   },
+  //   [form]
+  // );
 
-  const handleDescriptionChange = useCallback(
-    (value: string) => {
-      form.setValue('description', value);
-    },
-    [form]
-  );
+  // const handleDescriptionChange = useCallback(
+  //   (value: string) => {
+  //     form.setValue('description', value);
+  //   },
+  //   [form]
+  // );
 
   const queryClient = useQueryClient();
 
@@ -89,10 +89,9 @@ export default function EditTransactionDialog({
 
       form.reset({
         type,
-        description: '',
+
         amount: 0,
         date: new Date(),
-        category: undefined,
       });
 
       // After creating a transaction, we need to invalidate the overview query
@@ -105,19 +104,21 @@ export default function EditTransactionDialog({
     },
   });
 
-  // const onSubmit = useCallback(
-  //   (values: EditTransactionSchemaType) => {
-  //     toast.loading('Editing transaction...', {
-  //       id: 'edit-transaction',
-  //     });
+  const onSubmit = useCallback(
+    (values: EditTransactionSchemaType) => {
+      toast.loading('Editing transaction...', {
+        id: 'edit-transaction',
+      });
 
-  //     mutate({
-  //       ...values,
-  //       date: dateToUTCDate(values.date),
-  //     });
-  //   },
-  //   [mutate]
-  // );
+      console.log(values);
+
+      mutate({
+        ...values,
+        date: dateToUTCDate(values.date),
+      });
+    },
+    [mutate]
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -138,8 +139,7 @@ export default function EditTransactionDialog({
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          {/* form.handleSubmit(onSubmit) goes into the onSubmit property */}
-          <form className='space-y-4'>
+          <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
             {/* <FormField
               control={form.control}
               name='description'
@@ -180,12 +180,7 @@ export default function EditTransactionDialog({
                 <FormItem>
                   <FormLabel>Amount</FormLabel>
                   <FormControl>
-                    <Input
-                      defaultValue={0}
-                      type='number'
-                      {...field}
-                      value={transaction.amount}
-                    />
+                    <Input defaultValue={0} type='number' {...field} />
                   </FormControl>
                   <FormDescription className='text-xs'>
                     Transaction amount (required)
@@ -272,7 +267,7 @@ export default function EditTransactionDialog({
             </Button>
           </DialogClose>
           {/* form.handleSubmit(onSubmit) goes in onClick */}
-          <Button disabled={isPending}>
+          <Button disabled={isPending} onClick={form.handleSubmit(onSubmit)}>
             {!isPending && 'Edit'}
             {isPending && <Loader2 className='animate-spin' />}
           </Button>

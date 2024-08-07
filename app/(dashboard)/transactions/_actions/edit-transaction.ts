@@ -1,14 +1,27 @@
 'use server';
 
 import prisma from '@/lib/prisma';
+import {
+  EditTransactionSchema,
+  EditTransactionSchemaType,
+} from '@/schema/edit-transaction-schema';
 import { currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
-export async function editTransaction(id: string) {
+export async function editTransaction(form: EditTransactionSchemaType) {
+  console.log(form);
+  const parsedBody = EditTransactionSchema.safeParse(form);
+
+  if (!parsedBody.success) {
+    throw new Error(parsedBody.error.message);
+  }
+
   const user = await currentUser();
   if (!user) {
     redirect('/sign-in');
   }
+
+  const { amount, date, id, type } = parsedBody.data;
 
   const transaction = await prisma.transaction.findUnique({
     where: {
@@ -23,10 +36,14 @@ export async function editTransaction(id: string) {
 
   await prisma.$transaction([
     // Delete transaction from db
-    prisma.transaction.delete({
+    prisma.transaction.update({
       where: {
         id,
         userId: user.id,
+      },
+      data: {
+        amount,
+        date,
       },
     }),
     // Update month history
