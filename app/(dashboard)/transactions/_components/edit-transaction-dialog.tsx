@@ -38,8 +38,8 @@ import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import CategoryPicker from '../../_components/category-picker';
-import DescriptionPicker from '../../_components/description-picker';
+// import CategoryPicker from '../../_components/category-picker';
+// import DescriptionPicker from '../../_components/description-picker';
 import { EditTransactionSchema } from '@/schema/edit-transaction-schema';
 import { Transaction } from '@prisma/client';
 
@@ -61,6 +61,7 @@ export default function EditTransactionDialog({
     defaultValues: {
       type,
       date: new Date(),
+      id: transaction.id,
     },
   });
 
@@ -78,13 +79,20 @@ export default function EditTransactionDialog({
   //   [form]
   // );
 
+  const handleAmountChange = useCallback(
+    (value: number) => {
+      form.setValue('amount', value);
+    },
+    [form]
+  );
+
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
     mutationFn: editTransaction,
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success('Transaction successfully edited  🎉', {
-        id: 'create-transaction',
+        id: 'edit-transaction',
       });
 
       form.reset({
@@ -96,7 +104,8 @@ export default function EditTransactionDialog({
 
       // After creating a transaction, we need to invalidate the overview query
       // which will refetch data in the homepage
-      queryClient.invalidateQueries({
+
+      await queryClient.invalidateQueries({
         queryKey: ['overview'],
       });
 
@@ -109,8 +118,6 @@ export default function EditTransactionDialog({
       toast.loading('Editing transaction...', {
         id: 'edit-transaction',
       });
-
-      console.log(values);
 
       mutate({
         ...values,
@@ -180,7 +187,14 @@ export default function EditTransactionDialog({
                 <FormItem>
                   <FormLabel>Amount</FormLabel>
                   <FormControl>
-                    <Input defaultValue={0} type='number' {...field} />
+                    <Input
+                      type='number'
+                      {...field}
+                      // value={transaction.amount ?? ''}
+                      // onChange={(e) =>
+                      //   handleAmountChange(parseInt(e.currentTarget.value))
+                      // }
+                    />
                   </FormControl>
                   <FormDescription className='text-xs'>
                     Transaction amount (required)
@@ -267,7 +281,7 @@ export default function EditTransactionDialog({
             </Button>
           </DialogClose>
           {/* form.handleSubmit(onSubmit) goes in onClick */}
-          <Button disabled={isPending} onClick={form.handleSubmit(onSubmit)}>
+          <Button onClick={form.handleSubmit(onSubmit)} disabled={isPending}>
             {!isPending && 'Edit'}
             {isPending && <Loader2 className='animate-spin' />}
           </Button>

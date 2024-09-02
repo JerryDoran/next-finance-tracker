@@ -106,6 +106,7 @@ export default function CreateTransactionDialog({
 
   const onSubmit = useCallback(
     (values: CreateTransactionSchemaType) => {
+      console.log(values);
       toast.loading('Creating transaction...', {
         id: 'create-transaction',
       });

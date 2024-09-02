@@ -9,7 +9,7 @@ import { currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
 export async function editTransaction(form: EditTransactionSchemaType) {
-  console.log(form);
+  
   const parsedBody = EditTransactionSchema.safeParse(form);
 
   if (!parsedBody.success) {
