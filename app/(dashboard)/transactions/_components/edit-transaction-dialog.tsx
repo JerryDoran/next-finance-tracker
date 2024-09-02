@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useCallback, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { TransactionType } from '@/lib/types';
 import {
   Dialog,
@@ -79,12 +79,12 @@ export default function EditTransactionDialog({
   //   [form]
   // );
 
-  const handleAmountChange = useCallback(
-    (value: number) => {
-      form.setValue('amount', value);
-    },
-    [form]
-  );
+  // const handleAmountChange = useCallback(
+  //   (value: number) => {
+  //     form.setValue('amount', value);
+  //   },
+  //   [form]
+  // );
 
   const queryClient = useQueryClient();
 
@@ -92,7 +92,11 @@ export default function EditTransactionDialog({
     mutationFn: editTransaction,
     onSuccess: async () => {
       toast.success('Transaction successfully edited  🎉', {
-        id: 'edit-transaction',
+        id: transaction.id,
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: ['transactions'],
       });
 
       form.reset({
@@ -100,13 +104,6 @@ export default function EditTransactionDialog({
 
         amount: 0,
         date: new Date(),
-      });
-
-      // After creating a transaction, we need to invalidate the overview query
-      // which will refetch data in the homepage
-
-      await queryClient.invalidateQueries({
-        queryKey: ['overview'],
       });
 
       setOpen((prev) => !prev);

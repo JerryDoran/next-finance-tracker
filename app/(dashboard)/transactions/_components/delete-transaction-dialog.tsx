@@ -10,10 +10,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { TransactionType } from '@/lib/types';
+
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { deleteCategory } from '../../_actions/categories';
+
 import { deleteTransaction } from '../_actions/delete-transaction';
 
 type DeleteTransactionDialogProps = {
