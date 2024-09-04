@@ -60,8 +60,9 @@ export default function EditTransactionDialog({
     resolver: zodResolver(EditTransactionSchema),
     defaultValues: {
       type,
-      date: new Date(),
+      date: transaction.date,
       id: transaction.id,
+      amount: transaction.amount,
     },
   });
 
@@ -113,7 +114,7 @@ export default function EditTransactionDialog({
   const onSubmit = useCallback(
     (values: EditTransactionSchemaType) => {
       toast.loading('Editing transaction...', {
-        id: 'edit-transaction',
+        id: transaction.id,
       });
 
       mutate({
@@ -121,7 +122,7 @@ export default function EditTransactionDialog({
         date: dateToUTCDate(values.date),
       });
     },
-    [mutate]
+    [mutate, transaction.id]
   );
 
   return (
@@ -184,14 +185,7 @@ export default function EditTransactionDialog({
                 <FormItem>
                   <FormLabel>Amount</FormLabel>
                   <FormControl>
-                    <Input
-                      type='number'
-                      {...field}
-                      // value={transaction.amount ?? ''}
-                      // onChange={(e) =>
-                      //   handleAmountChange(parseInt(e.currentTarget.value))
-                      // }
-                    />
+                    <Input id='amount' type='number' {...field} />
                   </FormControl>
                   <FormDescription className='text-xs'>
                     Transaction amount (required)
