@@ -55,6 +55,7 @@ export default function EditTransactionDialog({
   transaction,
 }: EditTransactionDialogProps) {
   const [open, setOpen] = useState(false);
+  const [openCalendar, setOpenCalendar] = useState(false);
 
   const form = useForm<EditTransactionSchemaType>({
     resolver: zodResolver(EditTransactionSchema),
@@ -219,7 +220,7 @@ export default function EditTransactionDialog({
                 render={({ field }) => (
                   <FormItem className='flex flex-col gap-2'>
                     <FormLabel>Transaction Date</FormLabel>
-                    <Popover>
+                    <Popover open={openCalendar} onOpenChange={setOpenCalendar}>
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
@@ -245,6 +246,7 @@ export default function EditTransactionDialog({
                           onSelect={(value) => {
                             if (!value) return;
                             field.onChange(value);
+                            setOpenCalendar(false);
                           }}
                           initialFocus
                         />
